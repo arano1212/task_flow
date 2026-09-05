@@ -1,0 +1,57 @@
+<div class="sticky-note p-4 rounded-sm relative border-t-4 
+    {% if task.estado == 'Completada' %} bg-emerald-200 text-emerald-950 border-emerald-300 opacity-90
+    {% elif task.prioridad == 'Alta' or task.prioridad == 'alta' %} bg-rose-200 text-rose-950 border-rose-300
+    {% elif task.estado == 'En Proceso' %} bg-sky-200 text-sky-950 border-sky-300
+    {% else %} bg-yellow-200 text-yellow-950 border-yellow-300 {% endif %}">
+
+    <div class="pin
+        {% if task.estado == 'Completada' %} bg-emerald-600
+        {% elif task.prioridad == 'Alta' or task.prioridad == 'alta' %} bg-rose-600
+        {% elif task.estado == 'En Proceso' %} bg-blue-600
+        {% else %} bg-red-500 {% endif %}">
+    </div>
+
+    <div class="flex items-start justify-between gap-2 mb-2">
+        <h4 class="font-bold text-lg leading-tight {{ 'line-through decoration-2' if task.estado == 'Completada' }}">
+            {{ task.titulo }}
+        </h4>
+        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
+            <button type="submit" class="text-slate-600 hover:text-red-800 transition" title="Quitar nota">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </form>
+    </div>
+
+    {% if task.descripcion %}
+        <p class="text-sm font-sans mb-3 opacity-90 leading-snug">{{ task.descripcion }}</p>
+    {% endif %}
+
+    <div class="flex items-center justify-between mt-3 pt-2 border-t border-black/10 text-xs font-sans">
+        <span class="font-bold">
+            {% if task.prioridad == 'Alta' or task.prioridad == 'alta' %}🔥 Alta
+            {% elif task.prioridad == 'Media' or task.prioridad == 'media' %}⚡ Media
+            {% else %}🍃 Baja{% endif %}
+        </span>
+
+        <!-- Botones para mover tareas -->
+        <div class="flex items-center gap-1">
+            {% if task.estado != 'Pendiente' %}
+            <form action="{{ url_for('move_task', task_id=task.id, new_status='Pendiente') }}" method="POST">
+                <button type="submit" class="p-1 hover:bg-black/10 rounded" title="Mover a Pendiente">👈</button>
+            </form>
+            {% endif %}
+
+            {% if task.estado != 'En Proceso' %}
+            <form action="{{ url_for('move_task', task_id=task.id, new_status='En Proceso') }}" method="POST">
+                <button type="submit" class="p-1 hover:bg-black/10 rounded" title="Mover a En Proceso">⚙️</button>
+            </form>
+            {% endif %}
+
+            {% if task.estado != 'Completada' %}
+            <form action="{{ url_for('move_task', task_id=task.id, new_status='Completada') }}" method="POST">
+                <button type="submit" class="p-1 hover:bg-black/10 rounded" title="Mover a Completada">👉</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
