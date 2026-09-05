@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/venv,python,flask
 # Edit at https://www.toptal.com/developers/gitignore?templates=venv,python,flask
 
-
+tareas.db
 
 .vscode
 ### Flask ###
